@@ -22,12 +22,6 @@ const (
 	NotExist = "Variable not exist"
 )
 
-//Data is struct type of json
-type Data struct {
-	Name  string `json:"Name"`
-	Value string `json:"value"`
-}
-
 //CheckError checks the whether is there any error
 func CheckError(err error) {
 	if err != nil {
@@ -37,12 +31,7 @@ func CheckError(err error) {
 
 //WriteData writes the key value pairs into the json file
 func WriteData(m1 map[string]string) {
-	var readData []Data
-	for i, v := range m1 {
-		data1 := Data{Name: i, Value: v}
-		readData = append(readData, data1)
-	}
-	bytedata, err := json.MarshalIndent(readData, "", " ")
+	bytedata, err := json.MarshalIndent(m1, "", " ")
 	CheckError(err)
 	ioutil.WriteFile(fileName, bytedata, os.ModePerm)
 
@@ -53,20 +42,16 @@ func IsDataExists(key string) (map[string]string, bool) {
 	if _, err := os.Stat(fileName); os.IsNotExist(err) {
 		f, err := os.Create(fileName)
 		CheckError(err)
-		_, err = io.WriteString(f, "[]")
+		_, err = io.WriteString(f, "{}")
 		defer f.Close()
 	}
 
 	databyte, err := ioutil.ReadFile(fileName)
 	CheckError(err)
 
-	var readData []Data
-	err = json.Unmarshal(databyte, &readData)
-	CheckError(err)
 	m1 := make(map[string]string)
-	for _, val := range readData {
-		m1[val.Name] = val.Value
-	}
+	err = json.Unmarshal(databyte, &m1)
+	CheckError(err)
 	if _, ok := m1[key]; ok {
 		return m1, true
 	}

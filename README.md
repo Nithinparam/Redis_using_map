@@ -1,6 +1,6 @@
-# Redis Using Map and Struct
+# Redis Using Map
 
-## In memory data structure using maps and struct
+## In memory data structure using maps
 
 ###  SetData
 *   Sets the key value pair into the json file

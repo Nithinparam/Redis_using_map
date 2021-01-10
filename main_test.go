@@ -5,8 +5,8 @@ import "testing"
 func TestGetData(t *testing.T) {
 	key := "a"
 	val := GetData(key)
-	if val != "2" {
-		t.Error("Expected", 2, "got", val)
+	if val != "1" {
+		t.Error("Expected", 1, "got", val)
 	}
 
 }
@@ -45,5 +45,13 @@ func TestIsDataExists(t *testing.T) {
 	_, yn := IsDataExists(key)
 	if yn != true {
 		t.Error("Expected Data exists")
+	}
+}
+
+func BenchmarkGetData(b *testing.B) {
+	key := "a"
+	for i := 0; i < b.N; i++ {
+		GetData(key)
+
 	}
 }
